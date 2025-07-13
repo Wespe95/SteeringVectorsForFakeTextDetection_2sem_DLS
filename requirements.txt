@@ -1,0 +1,41 @@
+# Data Science and Analysis
+numpy>=1.17.0
+pandas>=2.3.0
+scikit-learn>=1.7.0
+scipy>=1.8.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Dimensionality Reduction and Clustering
+umap-learn>=0.5.0
+
+# Progress Bars
+tqdm>=4.66.3
+
+# Data Serialization
+pickle-mixin>=1.0.0
+joblib>=1.2.0
+
+# File and System Operations
+shutil-which>=1.1.0
+
+# Jupyter and Development
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+torch>=2.0.0
+transformers>=5.0.0
+datasets>=3.6.0
+steering-vectors>=0.12.2
+accelerate>=1.8.1
+bitsandbytes>=0.46.1
+colorama>=0.4.6
+safetensors>=0.4.3
+typing_extensions>=3.7.4.3
+jinja2>=3.1.6
+psutil>=7.0.0
+sympy>=1.13.1
+requests>=2.32.2
+huggingface_hub>=0.24.0

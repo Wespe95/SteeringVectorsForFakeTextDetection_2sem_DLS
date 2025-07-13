@@ -1,0 +1,22 @@
+.idea
+.qodo
+# Steering data and models
+steering_data/
+*.pkl
+*.pth
+*.bin
+# Python
+__pycache__
+# Virtual Environment
+.venv
+.env
+venv/
+env/
+#Logging
+*.log
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+
+!requirements.txt
