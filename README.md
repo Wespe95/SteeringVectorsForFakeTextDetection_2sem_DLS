@@ -6,32 +6,34 @@
 - Для задачи детектирования фейковых текстов использовался домен reddit — тренировочное и тестовое множества. Из активаций слоёв и стиринг-векторов были посчитаны проекции "фейковости" и обучены три классификатора: логистическая регрессия, random forest и SVM.
 - Для каждого классификатора построены графики и рассчитаны основные метрики. Классификаторы обучались на каждом слое, чтобы выяснить, какая активация какого слоя лучше всего подходит для детекции фейковых текстов.
 - Аналогичный анализ проведён для задачи переноса: классификаторы обучались на стиринг-векторах одного домена (reddit) и тестировались на других доменах (financial, medical). Выбор этих доменов обусловлен их спецификой: финансовые и медицинские тексты имеют строгую структуру и терминологию, что усложняет детекцию фейковости — здесь креативность неуместна, и как человеку, так и модели приходится придерживаться определённого стиля и стандартов.
-- Для лучшего понималия проведенных экспериментов советую сначала посмотреть на эксперимента с Llama-2, потом с Microsoft/Phi-2 и после этого Falcon 3-7B-Base.
+- Для лучшего понимания проведенных экспериментов советую сначала посмотреть на эксперимента с Llama-2, потом с Microsoft/Phi-2 и после этого Falcon 3-7B-Base.
 ---
 
 ## Структура проекта:
 
-SteeringVectorsForFakeTextDetection_2sem_DLS/
-├── .gitignore
-├── README.md
-├── requirements.txt
-└── Projekt/
-    ├── compute_projection/                   # Scripts for calculating the projections
-    ├── compute_steering_vectors/             # Scripts for calculating the steering vectors
-    ├── computed_projection_data/             # Calculated projection results (a link to the Google Drive)
-    ├── computed_steering_data/               # Calculated steering vectors(a link to the Google Drive)
-    ├── notebooks/
-    │   ├── FakeTextDetectionWithSteering_llama.ipynb             # The first experiment for the Llama-2 model
-    │   ├── FakeTextDetectionWithSteering_phi2.ipynb             # The second experiment for the Microsoft/Phi-2 model
-    │   └── FakeTextDetectionWithSteering_falcon3.ipynb             # The third experiment for the Falcon3-7B-Base model
-    ├── visualize_computed_steering_vectors/   # Scripts for visualising the steering vectors
-    └── visualized_data_from_steering_vectors/ # Calculated visualisations (a link to the Google Drive)
+    SteeringVectorsForFakeTextDetection_2sem_DLS/
+    ├── .gitignore
+    ├── README.md
+    ├── requirements.txt
+    └── Projekt/
+        ├── compute_projection/ # Scripts for calculating the projections
+        ├── compute_steering_vectors/ # Scripts for calculating the steering vectors
+        ├── computed_projection_data/ # Calculated projection results (link to Google Drive)
+        ├── computed_steering_data/ # Calculated steering vectors (link to Google Drive)
+        ├── notebooks/
+        │   ├── FakeTextDetectionWithSteering_llama.ipynb   # the first experiment with the Llama-2 model.
+        │   ├── FakeTextDetectionWithSteering_phi2.ipynb    # the second experiment with the Microsoft/Phi-2 model
+        │   └── FakeTextDetectionWithSteering_falcon3.ipynb # the third experiment with the Falcon3-7B-Base model
+        ├── visualize_computed_steering_vectors/ # Scripts for visualising the steering vectors
+        └── visualized_data_from_steering_vectors/ # Calculated visualisations (link to Google Drive)
+
 
 ---
 
 ## Сравнительный анализ представления концепта "фейковости" в слоях LLM (Llama-2, Phi-2, Falcon 3-7B-Base)
 
-В этом проекте исследуется, как различные архитектуры современных языковых моделей (Llama-2, Phi-2, Falcon 3-7B-Base) формируют и обрабатывают концепт "фейковости" на уровне внутренних слоёв. Анализ проводится как на исходных данных, так и при переносе на специализированные домены (финансовый, медицинский).
+В этом проекте исследуется, как различные архитектуры современных языковых моделей (Llama-2, Phi-2, Falcon 3-7B-Base) формируют и обрабатывают концепт "фейковости" на уровне активаций. 
+Анализ проводится как на исходных данных (сохранение домена), так и при переносе на специализированные домены (финансовый, медицинский).
 
 ### Ключевые выводы по моделям
 
@@ -57,12 +59,16 @@ SteeringVectorsForFakeTextDetection_2sem_DLS/
 
 ### Итоговый вывод
 
-**Во всех моделях концепт "фейковости" формируется многоступенчато и не статичен:**  
+**Во всех моделях концепт "фейковости" формируется многоступенчато и нестатично:**  
 - В llama-2 и Falcon ключевая информация появляется в середине сети, у phi-2 — с самого начала.
 - Перенос на специализированные домены вызывает смещение значимых слоёв к концу или середине модели.
+- При переносе домена часть слоев становится менее чувствительна к концепту "фейковости". Данное поведение было замечено у всех трех моделей. На этом основании была выдвинута гипотеза о неоднородности концепта "фейковость".
 - Архитектурные особенности и разнообразие обучающих данных существенно влияют на чувствительность и структуру представления концепта.
 
 **Практический вывод:**  
 Для задач детекции "фейковости" важно учитывать не только архитектуру модели, но и специфику обучающих данных и целевого домена. 
 Разные модели формируют внутренние представления по-разному, что влияет на переносимость и качество решений в реальных задачах.
+Однозначно можно скачать, что Steering Vectors подходят для задачи детектирования текстов не хуже эмбеддингов и определенные слои улавливают этот концепт по-разному хорошо, зависит от модели.
+
 Для будущего анализа можно посмотреть, как ведет себя та или иная модель, если Steering Vectors будут вычислены на одном множестве доменов и перенос будет сделан на другое множество доменов.
+Более того, интересно посмотреть в будущих экспериментах, как модель/модели будет/будут реагировать на манипулированные тексты.
